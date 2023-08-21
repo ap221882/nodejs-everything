@@ -8,8 +8,8 @@
 // > chmod u+x ex1.js
 //~> now this -rwxr--r--@ is turned into an executable script
 
-console.log("This is an executable");
-printHelp();
+//^ console.log("This is an executable");
+//^ 1. printHelp();
 
 //****************************************************** */
 // * Always write some help output for your scripts
@@ -21,3 +21,8 @@ function printHelp() {
   console.log("--help                 print this help");
   console.log("");
 }
+
+//^ 2. taking inputs from terminal
+// console.log(process.argv); //% returns array of strings, 1st is node path, 2nd is file path
+//> run ./file.js --mode=production -hello=world
+console.log(process.argv.slice(2));
