@@ -48,5 +48,9 @@ if (args.help) {
 //**************************************** */
 function processFile(filePath) {
   var contents = fs.readFileSync(filePath);
-  console.log(contents);
+  // console.log(contents);
+  //~* reason is, by the time the characters reached the shell, console.log has already stringified into the characters we saw.___
+
+  //~* by using below method, we let the shell understand the contents and print them on the terminal
+  process.stdout.write(contents);
 }
