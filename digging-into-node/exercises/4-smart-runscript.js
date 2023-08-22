@@ -4,6 +4,8 @@
 
 //^ 1. printHelp();
 
+var path = require("path");
+
 function printHelp() {
   console.log("ex1 usage: ");
   console.log("    ex1.js --file={FILENAME}");
@@ -30,7 +32,9 @@ console.log(args);
 if (args.help) {
   printHelp();
 } else if (args.file) {
-  console.log(args.file);
+  let filePath = path.resolve(args.file);
+  console.log(filePath); //> converts relative to absolute path using __dirname ---> try this `./4-smart-runscript.js --file=../hello`
+  console.log(__dirname); //> current dirname
 } else {
   error("Incorrect usage", true);
 }
