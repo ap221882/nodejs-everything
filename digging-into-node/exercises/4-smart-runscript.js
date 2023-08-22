@@ -5,6 +5,7 @@
 //^ 1. printHelp();
 
 var path = require("path");
+var fs = require("fs");
 
 function printHelp() {
   console.log("ex1 usage: ");
@@ -27,14 +28,15 @@ var args = require("minimist")(process.argv.slice(2), {
   boolean: ["help"],
   string: ["file"],
 });
-console.log(args);
+// console.log(args);
 
 if (args.help) {
   printHelp();
 } else if (args.file) {
   let filePath = path.resolve(args.file);
-  console.log(filePath); //> converts relative to absolute path using __dirname ---> try this `./4-smart-runscript.js --file=../hello`
-  console.log(__dirname); //> current dirname
+  processFile(filePath);
+  // console.log(filePath); //> converts relative to absolute path using __dirname ---> try this `./4-smart-runscript.js --file=../hello`
+  // console.log(__dirname); //> current dirname
 } else {
   error("Incorrect usage", true);
 }
@@ -42,3 +44,9 @@ if (args.help) {
 //~% run -  ./4-smart-runscript.js --mode=development -c9 - foo bar (_ is for things which minimist doesn't understand)
 
 //~? try https://yargs.js.org/ for reference - it uses minimist - is a wrapper around minimist
+
+//**************************************** */
+function processFile(filePath) {
+  var contents = fs.readFileSync(filePath);
+  console.log(contents);
+}
