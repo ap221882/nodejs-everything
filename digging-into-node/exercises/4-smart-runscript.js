@@ -47,7 +47,7 @@ if (args.help) {
 
 //**************************************** */
 function processFile(filePath) {
-  var contents = fs.readFileSync(filePath);
+  var contents = fs.readFileSync(filePath, "utf8");
   // console.log(contents);
   //~* reason is, by the time the characters reached the shell, console.log has already stringified into the characters we saw.___
 
