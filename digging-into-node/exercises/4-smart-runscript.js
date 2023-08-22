@@ -15,6 +15,7 @@ function printHelp() {
   console.log("");
   console.log("--help                 print this help");
   console.log("--file={FILENAME}      process this file");
+  console.log("--in, -                process stdin");
   console.log("");
 }
 
@@ -34,12 +35,19 @@ var args = require("minimist")(process.argv.slice(2), {
 
 if (args.help) {
   printHelp();
-} else if (args.in) {
 } else if (args.file) {
   let filePath = path.resolve(args.file);
-  processFile(filePath);
-  // console.log(filePath); //> converts relative to absolute path using __dirname ---> try this `./4-smart-runscript.js --file=../hello`
-  // console.log(__dirname); //> current dirname
+
+  fs.readFile(filePath, function onContents(err, contents) {
+    if (err) {
+      error(err.toString());
+    } else {
+      processFile(contents.toString());
+    }
+  });
+} else if (args.in || args._.includes("-")) {
+  getStdin().then(processFile).catch(error);
+  //~* run cat files/hello.txt | ./4-smart-runscript.js --in
 } else {
   error("Incorrect usage", true);
 }
@@ -49,20 +57,9 @@ if (args.help) {
 //~? try https://yargs.js.org/ for reference - it uses minimist - is a wrapper around minimist
 
 //**************************************** */
-function processFile(filePath) {
-  var contents = fs.readFile(filePath, function onContents(err, contents) {
-    if (err) {
-      error(err.toString());
-    } else {
-      //? contents is a buffer
-      //* convert it to uppercase
-      contents = contents.toString().toUpperCase();
-      process.stdout.write(contents);
-    }
-  });
-  // console.log(contents);
-  //~* reason is, by the time the characters reached the shell, console.log has already stringified into the characters we saw.___
-
-  //~* by using below method, we let the shell understand the contents and print them on the terminal
-  // process.stdout.write(contents);
+function processFile(contents) {
+  contents = contents.toUpperCase();
+  process.stdout.write(contents);
 }
+
+//# STDIN is the program that is a buffer provided from the shell
