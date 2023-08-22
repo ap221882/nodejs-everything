@@ -6,6 +6,8 @@
 
 var path = require("path");
 var fs = require("fs");
+var util = require("util");
+var getStdin = require("get-stdin");
 
 function printHelp() {
   console.log("ex1 usage: ");
@@ -25,13 +27,14 @@ function error(msg, includeHelp = false) {
 }
 
 var args = require("minimist")(process.argv.slice(2), {
-  boolean: ["help"],
+  boolean: ["help", "in"],
   string: ["file"],
 });
 // console.log(args);
 
 if (args.help) {
   printHelp();
+} else if (args.in) {
 } else if (args.file) {
   let filePath = path.resolve(args.file);
   processFile(filePath);
