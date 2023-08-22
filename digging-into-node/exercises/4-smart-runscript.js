@@ -47,10 +47,19 @@ if (args.help) {
 
 //**************************************** */
 function processFile(filePath) {
-  var contents = fs.readFileSync(filePath, "utf8");
+  var contents = fs.readFile(filePath, function onContents(err, contents) {
+    if (err) {
+      error(err.toString());
+    } else {
+      //? contents is a buffer
+      //* convert it to uppercase
+      contents = contents.toString().toUpperCase();
+      process.stdout.write(contents);
+    }
+  });
   // console.log(contents);
   //~* reason is, by the time the characters reached the shell, console.log has already stringified into the characters we saw.___
 
   //~* by using below method, we let the shell understand the contents and print them on the terminal
-  process.stdout.write(contents);
+  // process.stdout.write(contents);
 }
