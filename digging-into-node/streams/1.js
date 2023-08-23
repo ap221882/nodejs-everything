@@ -18,4 +18,5 @@ function write(buffer, encoding, next) {
   // # second way
   this.push(buffer.toString().toUpperCase());
   next();
+  //~! sending null to push is same as "end signal"
 }
