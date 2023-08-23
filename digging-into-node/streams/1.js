@@ -9,7 +9,7 @@ var through = require("through2");
 
 //> Process the buffer data
 
-fs.createReadStream(process.argv[2]).pipe(through(write)).pipe(process.stdout);
+process.stdin.pipe(through(write)).pipe(process.stdout);
 
 function write(buffer, encoding, next) {
   //> what is returned from the buffer
