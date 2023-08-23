@@ -1,6 +1,7 @@
 var concat = require("concat-stream");
 var http = require("http");
 var qs = require("querystring");
+var through = require("through2");
 
 // process.stdin.pipe(
 //   concat(function (body) {
@@ -12,7 +13,7 @@ var qs = require("querystring");
 //* ctrl C is used to kill the program
 
 var server = http.createServer((req, res) => {
-  req.pipe(
+  req.pipe(counter()).pipe(
     concat({ encoding: "string" }, (body) => {
       // console.log(body.length);
       var params = qs.parse(body);
@@ -20,8 +21,20 @@ var server = http.createServer((req, res) => {
       res.end("ok\n");
     })
   );
+
+  function counter() {
+    var size = 0;
+    return through((buffer, encoding, next) => {
+      size += buffer.length;
+      if (size > 20) {
+        res.end("BIG");
+        // next(null, null);
+      } else {
+        next(null, buffer);
+      }
+    });
+  }
 });
 //> run -> curl -d msg=hello localhost:8000
-ok;
 
 server.listen(8000);
