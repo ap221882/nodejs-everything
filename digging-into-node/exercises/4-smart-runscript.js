@@ -9,6 +9,8 @@ var fs = require("fs");
 var util = require("util");
 var getStdin = require("get-stdin");
 
+var BASE_PATH = path.resolve(process.env.BASE_PATH || __dirname);
+
 function printHelp() {
   console.log("ex1 usage: ");
   console.log("    ex1.js --file={FILENAME}");
@@ -36,7 +38,7 @@ var args = require("minimist")(process.argv.slice(2), {
 if (args.help) {
   printHelp();
 } else if (args.file) {
-  let filePath = path.resolve(args.file);
+  let filePath = path.join(BASE_PATH, args.file);
 
   fs.readFile(filePath, function onContents(err, contents) {
     if (err) {
@@ -63,3 +65,7 @@ function processFile(contents) {
 }
 
 //# STDIN is the program that is a buffer provided from the shell
+
+if (process.env.HELLO) {
+  console.log(process.env.HELLO);
+}
